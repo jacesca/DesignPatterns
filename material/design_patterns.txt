@@ -1,0 +1,143 @@
+1. Single Responsibility Principle (SRP) — class should only have one job or responsibility.
+2. Open Closed Principle (OCP) —    open for extension but closed for modification.
+                                    class should be extended not modified.
+3. Liskov Substitution Principle (LSP) — child classes must be able to replace their super classes.
+                                         Objects of a superclass should be replaceable with objects 
+                                         of its subclasses without affecting the correctness of the program.
+4. Interface Segregation Principle (ISP) —  interfaces should be small: classes should not implement 
+                                            unnecessary methods.
+                                            Clients should not be forced to depend on interfaces they 
+                                            do not use. This principle suggests splitting large 
+                                            interfaces into smaller ones.
+5. Dependency Inversion Principle (DIP) —   dependency is reversed: high level components are free of 
+                                            low-level components.
+                                            High-level modules should not depend on low-level modules. 
+                                            Both should depend on abstractions. 
+                                            Additionally, abstractions should not depend on details, 
+                                            but details should depend on abstractions.
+
+
+
+Design patterns in data engineering
+ETL                         Extract-Transform-Load
+Data Virtualization         Deliver data as view
+Data stream processing      tailored for scenarios that require immediate insights and actions from 
+                            incoming data. 
+Batch Processing Pattern    It involves compiling and processing data in large, 
+                            discrete sets or ‘batches’ rather than in a continuous stream.
+Lambda architecture         Lambda architecture manages both real-time and batch processing through two 
+                            distinct layers, which is beneficial when historical data and real-time data 
+                            need to be processed separately.
+      
+Kappa architecture          Kappa architecture, uses a single streaming layer, suited to applications where 
+                            historical batch data isn't required, or the data is replayed in case of issues.
+Data Mesh                   Data mesh is a design pattern that decentralizes data ownership and governance 
+                            across different domains or teams within an organization.
+Microservices-based Pattern     The Microservices-based Pattern in data pipeline architecture refers to a 
+                                design where the pipeline is composed of a collection of small, independent, 
+                                and loosely coupled services.
+Event-driven Architecture Pattern       centers around the detection, consumption, and reaction to events
+
+
+Creational patterns
+    *** Factory method      for creating objects in a superclass, but allows subclasses to alter the 
+                            type of objects that will be created.
+    Abstract method         lets you produce families of related objects without specifying their  
+                            concrete classes.
+    *** Builder             lets you construct complex objects step by step. The pattern allows you to  
+                            produce different types and representations of an object using the same  
+                            construction code.
+    *** Prototype           lets you copy existing objects without making your code dependent on  
+                            their classes.
+    *** Singleton           lets you ensure that a class has only one instance, while providing a global 
+                            access point to this instance.
+
+Structural patterns
+    ***Adapter              allows objects with incompatible interfaces to collaborate.
+    Bridge                  lets you split a large class or a set of closely related classes into two 
+                            separate hierarchies—abstraction and implementation—which can be developed 
+                            independently of each other.
+    Composite               lets you compose objects into tree structures and then work with these 
+                            structures as if they were individual objects.
+    ***Decorator            lets you attach new behaviors to objects by placing these objects inside 
+                            special wrapper objects that contain the behaviors.
+    Facade                  provides a simplified interface to a library, a framework, or any other 
+                            complex set of classes.
+    Flyweight               lets you fit more objects into the available amount of RAM by sharing 
+                            common parts of state between multiple objects instead of keeping all 
+                            of the data in each object.
+    *** Proxy               lets you provide a substitute or placeholder for another object. A proxy 
+                            controls access to the original object, allowing you to perform something 
+                            either before or after the request gets through to the original object.
+
+Behavioral patterns
+    Chain of responsability lets you pass requests along a chain of handlers. Upon receiving a request, 
+                            each handler decides either to process the request or to pass it to the 
+                            next handler in the chain.
+    Command                 turns a request into a stand-alone object that contains all information 
+                            about the request. This transformation lets you pass requests as a method 
+                            arguments, delay or queue a request’s execution, and support undoable 
+                            operations.
+    Iterator                lets you traverse elements of a collection without exposing its underlying 
+                            representation (list, stack, tree, etc.). An object that facilitates the 
+                            traversal of a data structure.
+    Mediator                lets you reduce chaotic dependencies between objects. The pattern restricts 
+                            direct communications between the objects and forces them to collaborate 
+                            only via a mediator object. Facilitates communication between components.
+    Memento                 lets you save and restore the previous state of an object without revealing 
+                            the details of its implementation.
+    Observer                lets you define a subscription mechanism to notify multiple objects about 
+                            any events that happen to the object they’re observing.
+    State                   lets an object alter its behavior when its internal state changes. It 
+                            appears as if the object changed its class.
+    Strategy                lets you define a family of algorithms, put each of them into a separate 
+                            class, and make their objects interchangeable.
+    Template method         defines the skeleton of an algorithm in the superclass but lets subclasses 
+                            override specific steps of the algorithm without changing its structure.
+    Visitor                 lets you separate algorithms from the objects on which they operate.
+
+
+
+
+Data Design patterns
+
+Data Lake vs. Data Warehouse: 
+    - A data lake is suitable for raw, unstructured data, ideal for large-scale 
+      data processing, while a data warehouse supports structured data and is 
+      designed for fast SQL queries. If we need real-time analytics or structured 
+      reporting, a data warehouse is preferable.
+
+Lambda architecture
+    - Lambda architecture manages both real-time and batch processing through two 
+      distinct layers, which is beneficial when historical data and real-time data 
+      need to be processed separately.
+      
+Kappa architecture
+    - Kappa architecture, uses a single streaming layer, suited to applications where 
+      historical batch data isn't required, or the data is replayed in case of issues.
+
+
+DELTA TABLES
+    - ACID transactions
+    - Schema evolution
+    - Time traveler (select past versions of data)
+    - Efficients updates or deletes
+
+
+Databricks clusters
+    - Standard Clusters: These are general-purpose clusters suitable for development, 
+    - Job Clusters: Created and terminated automatically with each job, job clusters are useful for single-use tasks, optimizing costs by only existing while the job runs.
+    - High Concurrency Clusters: Designed for multi-user environments, these clusters provide isolated processes for each user to prevent resource contention. They are ideal for interactive analysis and ETL workloads where multiple users need access simultaneously.
+    - Single Node Clusters: Suitable for simple tasks or lightweight processing, like testing and single-node machine learning tasks, where distributed processing isn’t necessary.
+    - Databricks Serverless Pools:
+
+
+`OPTIMIZE my_delta_table ZORDER BY (customer_id, date)`
+`spark.sql("OPTIMIZE delta.`/path/to/delta-table`")`
+
+OPTIMIZE: This command compacts small files into larger ones, which 
+          reduces the number of file reads and improves read performance. 
+          It’s especially useful when data is written in frequent small batches.
+ZORDER:   When used with OPTIMIZE, ZORDER organizes data on disk according to 
+          specified columns, improving query performance by co-locating related data. 
+          It is especially useful when filtering on specific columns.

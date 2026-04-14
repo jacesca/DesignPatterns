@@ -44,9 +44,7 @@
 # Source: https://refactoring.guru/design-patterns/catalog
 ################################################
 
-if __name__ == '__main__':
-  print('Design Patterns')
-  
+
 # ----------------------------------------------
 # - Creational Patterns:
 #     * Factory Method          : Factory method more expresive than initializer.
